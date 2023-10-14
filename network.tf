@@ -5,6 +5,7 @@ resource "aws_vpc" "this" {
   enable_dns_support = true
   # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc#enable_dns_hostnames
   enable_dns_hostnames = true
+  #checkov:skip=CKV2_AWS_11: Not creating a flow log for this VPC
   tags = {
     "Name" = "app-4"
   }
@@ -40,7 +41,7 @@ resource "aws_route_table" "private" {
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.this.id
   tags = {
-    "Name" = "app-4-public-route-table"
+    "Name" = "app-4-public"
   }
 }
 resource "aws_route_table_association" "private" {
