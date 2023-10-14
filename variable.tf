@@ -24,11 +24,11 @@ variable "vpc_cidr" {
 }
 variable "subnet_cidr_private" {
   description = "cidr blocks for the private subnets"
-  default     = ["10.20.30.0/27", "10.20.30.32/27", "10.20.30.64/27"]
+  default     = ["10.20.32.0/27", "10.20.32.32/27", "10.20.32.64/27"]
   type        = list(any)
 }
 variable "subnet_cidr_public" {
   description = "cidr blocks for the public subnets"
-  default     = ["10.20.30.96/27"]
+  default     = ["10.20.32.96/27"]
   type        = list(any)
 }
