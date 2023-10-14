@@ -83,5 +83,5 @@ resource "aws_route" "private-route" {
   count                  = length(var.subnet_cidr_private)
   destination_cidr_block = "0.0.0.0/0"
   route_table_id         = aws_route_table.private[count.index].id
-  nat_gateway_id         = aws_nat_gateway.public[count.index].id
+  nat_gateway_id         = aws_nat_gateway.public[0].id
 }
