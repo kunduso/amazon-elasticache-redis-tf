@@ -32,3 +32,8 @@ variable "subnet_cidr_public" {
   default     = ["10.20.32.96/27"]
   type        = list(any)
 }
+variable "elasticache_auth" {
+  description = "The auth token to the Amazon ElastiCache cluster"
+  type        = string
+  sensitive   = true
+}
