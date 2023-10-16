@@ -6,16 +6,19 @@ resource "aws_kms_key" "encrytion_rest" {
   enable_key_rotation     = true
   description             = "Key to encrypt cache at rest"
   deletion_window_in_days = 7
+  #checkov:skip=CKV2_AWS_64: Not including a KMS Key policy
 }
 resource "aws_kms_key" "encrytion_secret" {
   enable_key_rotation     = true
   description             = "Key to encrypt secret"
   deletion_window_in_days = 7
+  #checkov:skip=CKV2_AWS_64: Not including a KMS Key policy
 }
 resource "aws_secretsmanager_secret" "elasticache_auth" {
   name                    = "elasticache_auth"
   recovery_window_in_days = 0
   kms_key_id              = aws_kms_key.encrytion_secret.id
+  #checkov:skip=CKV2_AWS_57: Disabled Secrets Manager secrets automatic rotation
 }
 resource "aws_secretsmanager_secret_version" "auth" {
   secret_id     = aws_secretsmanager_secret.elasticache_auth.id
