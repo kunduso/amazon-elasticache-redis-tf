@@ -33,7 +33,7 @@ variable "subnet_cidr_public" {
   type        = list(any)
 }
 variable "elasticache_auth" {
-  description = "The auth token to the Amazon ElastiCache cluster"
+  description = "The auth token to the Amazon ElastiCache cluster. This value is passed to Terraform from the pipeline."
   type        = string
   sensitive   = true
 }
