@@ -31,7 +31,7 @@ resource "aws_elasticache_replication_group" "app4" {
   replication_group_id       = "app4-redis-cluster"
   description                = "ElastiCache cluster for app4"
   node_type                  = "cache.t2.small"
-  parameter_group_name       = "default.redis7.cluster.om"
+  parameter_group_name       = "default.redis7.cluster.on"
   port                       = 6379
   multi_az_enabled           = true
   num_node_groups            = 3
