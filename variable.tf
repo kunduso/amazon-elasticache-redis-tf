@@ -37,3 +37,13 @@ variable "elasticache_auth" {
   type        = string
   sensitive   = true
 }
+variable "ami_name" {
+  description = "The ami name of the image from where the instances will be created"
+  default     = ["amzn2-ami-amd-hvm-2.0.20230727.0-x86_64-gp2"]
+  type        = list(string)
+}
+variable "instance_type" {
+  description = "The instance type of the EC2 instances"
+  default     = "t3.medium"
+  type        = string
+}
