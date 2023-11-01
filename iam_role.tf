@@ -1,6 +1,3 @@
-locals {
-  account_id = aws_vpc.this.owner_id
-}
 #Create a policy to read from the specific parameter store
 #https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy
 resource "aws_iam_policy" "ssm_parameter_policy" {
