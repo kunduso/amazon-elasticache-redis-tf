@@ -1,5 +1,5 @@
 resource "aws_elasticache_subnet_group" "elasticache_subnet" {
-  name       = "cache-subnet"
+  name       = "app-4-cache-subnet"
   subnet_ids = [for subnet in aws_subnet.private : subnet.id]
 }
 resource "aws_kms_key" "encrytion_rest" {
@@ -15,7 +15,7 @@ resource "aws_kms_key" "encrytion_secret" {
   #checkov:skip=CKV2_AWS_64: Not including a KMS Key policy
 }
 resource "aws_secretsmanager_secret" "elasticache_auth" {
-  name                    = "elasticache_auth"
+  name                    = "app-4-elasticache-auth"
   recovery_window_in_days = 0
   kms_key_id              = aws_kms_key.encrytion_secret.id
   #checkov:skip=CKV2_AWS_57: Disabled Secrets Manager secrets automatic rotation

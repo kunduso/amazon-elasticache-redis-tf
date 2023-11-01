@@ -2,7 +2,7 @@ resource "aws_default_security_group" "default" {
   vpc_id = aws_vpc.this.id
 }
 resource "aws_security_group" "elasticache" {
-  name        = "app-4-elasticache"
+  name        = "app-4-elasticache-sg"
   description = "Allow inbound to and outbound access from the Amazon ElastiCache cluster."
   ingress {
     from_port   = 6379
