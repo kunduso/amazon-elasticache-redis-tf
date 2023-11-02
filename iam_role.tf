@@ -1,6 +1,3 @@
-locals {
-  account_id = aws_vpc.this.owner_id
-}
 #Create a policy to read from the specific parameter store
 #https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy
 resource "aws_iam_policy" "ssm_parameter_policy" {
@@ -19,6 +16,13 @@ resource "aws_iam_policy" "ssm_parameter_policy" {
           "ssm:GetParameter"
         ],
         Resource = [aws_ssm_parameter.elasticache_ep.arn, aws_ssm_parameter.elasticache_port.arn]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:Decrypt"
+        ]
+        Resource = [aws_kms_key.encrytion_rest.arn]
       }
     ]
   })
@@ -36,9 +40,16 @@ resource "aws_iam_policy" "secret_manager_policy" {
       {
         Effect = "Allow",
         Action = [
+          "secretsmanager:GetSecretValue"
+        ]
+        Resource = [aws_secretsmanager_secret_version.auth.arn]
+      },
+      {
+        Effect = "Allow",
+        Action = [
           "kms:Decrypt"
         ]
-        Resource = [aws_kms_key.encrytion_rest.arn]
+        Resource = [aws_kms_key.encrytion_secret.arn]
       }
     ]
   })
