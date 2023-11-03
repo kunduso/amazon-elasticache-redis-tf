@@ -4,6 +4,10 @@ terraform {
       source  = "hashicorp/aws"
       version = "5.20.1"
     }
+    random = {
+      source = "hashicorp/random"
+      version = "3.5.1"
+    }
   }
 }
 
@@ -16,4 +20,7 @@ provider "aws" {
       Source = "https://github.com/kunduso/add-asg-elb-terraform"
     }
   }
+}
+provider "random" {
+  # Configuration options
 }
