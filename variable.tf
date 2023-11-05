@@ -32,11 +32,6 @@ variable "subnet_cidr_public" {
   default     = ["10.20.32.96/27"]
   type        = list(any)
 }
-variable "elasticache_auth" {
-  description = "The auth token to the Amazon ElastiCache cluster. This value is passed to Terraform from the pipeline."
-  type        = string
-  sensitive   = true
-}
 variable "ami_name" {
   description = "The ami name of the image from where the instances will be created"
   default     = ["amzn2-ami-amd-hvm-2.0.20230727.0-x86_64-gp2"]
