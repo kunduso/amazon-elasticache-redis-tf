@@ -22,7 +22,7 @@ resource "aws_secretsmanager_secret" "elasticache_auth" {
 }
 resource "aws_secretsmanager_secret_version" "auth" {
   secret_id     = aws_secretsmanager_secret.elasticache_auth.id
-  secret_string = var.elasticache_auth
+  secret_string = random_password.auth.result
 }
 #https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_replication_group
 resource "aws_elasticache_replication_group" "app4" {

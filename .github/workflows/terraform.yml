@@ -104,7 +104,6 @@ jobs:
       if: github.ref != 'refs/heads/main' || github.event_name == 'pull_request'
       run: |
         terraform plan -no-color -input=false \
-        -var="elasticache_auth=${{ secrets.elasticache_auth }}" \
         -out=TFplan.JSON
       continue-on-error: true
 
@@ -161,5 +160,4 @@ jobs:
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main'
       run: |
-        terraform apply -auto-approve -input=false \
-        -var="elasticache_auth=${{ secrets.elasticache_auth }}"
+        terraform apply -auto-approve -input=false
