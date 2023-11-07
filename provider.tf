@@ -17,7 +17,7 @@ provider "aws" {
   secret_key = var.secret_key
   default_tags {
     tags = {
-      Source = "https://github.com/kunduso/add-asg-elb-terraform"
+      Source = "https://github.com/kunduso/amazon-elasticache-redis-tf"
     }
   }
 }
