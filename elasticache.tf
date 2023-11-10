@@ -41,6 +41,18 @@ resource "aws_elasticache_replication_group" "app4" {
   transit_encryption_enabled = true
   auth_token                 = aws_secretsmanager_secret_version.auth.secret_string
   security_group_ids         = [aws_security_group.elasticache.id]
+  log_delivery_configuration {
+    destination      = aws_cloudwatch_log_group.slow_log.name
+    destination_type = cloudwatch-logs
+    log_format       = json
+    log_type         = slow-log
+  }
+  log_delivery_configuration {
+    destination      = aws_cloudwatch_log_group.engine_log.name
+    destination_type = cloudwatch-logs
+    log_format       = json
+    log_type         = engine-log
+  }
   lifecycle {
     ignore_changes = [kms_key_id]
   }
