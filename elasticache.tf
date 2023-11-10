@@ -43,15 +43,15 @@ resource "aws_elasticache_replication_group" "app4" {
   security_group_ids         = [aws_security_group.elasticache.id]
   log_delivery_configuration {
     destination      = aws_cloudwatch_log_group.slow_log.name
-    destination_type = cloudwatch-logs
-    log_format       = json
-    log_type         = slow-log
+    destination_type = "cloudwatch-logs"
+    log_format       = "json"
+    log_type         = "slow-log"
   }
   log_delivery_configuration {
     destination      = aws_cloudwatch_log_group.engine_log.name
-    destination_type = cloudwatch-logs
-    log_format       = json
-    log_type         = engine-log
+    destination_type = "cloudwatch-logs"
+    log_format       = "json"
+    log_type         = "engine-log"
   }
   lifecycle {
     ignore_changes = [kms_key_id]
