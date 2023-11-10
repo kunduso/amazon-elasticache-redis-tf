@@ -28,7 +28,7 @@ resource "aws_secretsmanager_secret_version" "auth" {
 resource "aws_elasticache_replication_group" "app4" {
   automatic_failover_enabled = true
   subnet_group_name          = aws_elasticache_subnet_group.elasticache_subnet.name
-  replication_group_id       = "app-4-redis-cluster"
+  replication_group_id       = var.replication_group_id
   description                = "ElastiCache cluster for app4"
   node_type                  = "cache.t2.small"
   parameter_group_name       = "default.redis7.cluster.on"
@@ -41,6 +41,18 @@ resource "aws_elasticache_replication_group" "app4" {
   transit_encryption_enabled = true
   auth_token                 = aws_secretsmanager_secret_version.auth.secret_string
   security_group_ids         = [aws_security_group.elasticache.id]
+  log_delivery_configuration {
+    destination      = aws_cloudwatch_log_group.slow_log.name
+    destination_type = "cloudwatch-logs"
+    log_format       = "json"
+    log_type         = "slow-log"
+  }
+  log_delivery_configuration {
+    destination      = aws_cloudwatch_log_group.engine_log.name
+    destination_type = "cloudwatch-logs"
+    log_format       = "json"
+    log_type         = "engine-log"
+  }
   lifecycle {
     ignore_changes = [kms_key_id]
   }
