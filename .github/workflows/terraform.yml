@@ -105,7 +105,6 @@ jobs:
       run: |
         terraform plan -no-color -input=false \
         -out=TFplan.JSON
-      continue-on-error: true
 
     # Generate an Infracost diff and save it to a JSON file.
     - name: Generate Infracost diff
