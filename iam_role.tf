@@ -22,7 +22,7 @@ resource "aws_iam_policy" "ssm_parameter_policy" {
         Action = [
           "kms:Decrypt"
         ]
-        Resource = [aws_kms_key.encrytion_rest.arn]
+        Resource = [aws_kms_key.encryption_rest.arn]
       }
     ]
   })
@@ -42,14 +42,14 @@ resource "aws_iam_policy" "secret_manager_policy" {
         Action = [
           "secretsmanager:GetSecretValue"
         ]
-        Resource = [aws_secretsmanager_secret_version.auth.arn]
+        Resource = []
       },
       {
         Effect = "Allow",
         Action = [
           "kms:Decrypt"
         ]
-        Resource = [aws_kms_key.encrytion_secret.arn]
+        Resource = [aws_kms_key.encryption_secret.arn]
       }
     ]
   })
