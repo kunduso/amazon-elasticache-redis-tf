@@ -13,7 +13,7 @@ resource "aws_kms_key" "encryption_rest" {
   enable_key_rotation     = true
   description             = "Key to encrypt cache at rest."
   deletion_window_in_days = 7
-  #checkov:skip=CKV2_AWS_64: Not including a KMS Key policy
+  #checkov:skip=CKV2_AWS_64: KMS Key policy in a separate resource
 }
 resource "aws_kms_alias" "encryption_rest" {
   name          = "alias/elasticache-app-4-at-rest"
