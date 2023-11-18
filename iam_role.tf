@@ -42,7 +42,7 @@ resource "aws_iam_policy" "secret_manager_policy" {
         Action = [
           "secretsmanager:GetSecretValue"
         ]
-        Resource = []
+        Resource = [aws_secretsmanager_secret_version.auth.arn]
       },
       {
         Effect = "Allow",
