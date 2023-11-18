@@ -1,13 +1,13 @@
 
-resource "aws_kms_key" "encrytion_secret" {
+resource "aws_kms_key" "encryption_secret" {
   enable_key_rotation     = true
   description             = "Key to encrypt secret"
   deletion_window_in_days = 7
   #checkov:skip=CKV2_AWS_64: Not including a KMS Key policy
 }
-resource "aws_kms_alias" "encrytion_secret" {
+resource "aws_kms_alias" "encryption_secret" {
   name          = "alias/elasticache-app-4-in-transit"
-  target_key_id = aws_kms_key.encrytion_secret.key_id
+  target_key_id = aws_kms_key.encryption_secret.key_id
 }
 resource "aws_kms_key" "encryption_rest" {
   enable_key_rotation     = true
