@@ -9,7 +9,7 @@ resource "aws_security_group" "elasticache" {
     to_port     = 6379
     protocol    = "tcp"
     cidr_blocks = [var.vpc_cidr]
-    description = "Enable access from an Amazon EC2 instance in the VPC"
+    description = "Enable communication to the Amazon ElastiCache for Redis cluster. "
   }
   egress {
     from_port   = 0
