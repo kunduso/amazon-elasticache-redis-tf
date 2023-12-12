@@ -50,6 +50,11 @@ resource "aws_instance" "app-server-read" {
   iam_instance_profile        = aws_iam_instance_profile.ec2_profile.name
   associate_public_ip_address = true
   subnet_id                   = aws_subnet.public[0].id
+  ebs_optimized = true
+  monitoring = true
+  root_block_device {
+    encrypted = true
+  }
   tags = {
     Name = "app-4-server-read"
   }
@@ -68,6 +73,11 @@ resource "aws_instance" "app-server-write" {
   iam_instance_profile        = aws_iam_instance_profile.ec2_profile.name
   associate_public_ip_address = true
   subnet_id                   = aws_subnet.public[0].id
+  ebs_optimized = true
+  monitoring = true
+    root_block_device {
+    encrypted = true
+  }
   tags = {
     Name = "app-4-server-write"
   }
