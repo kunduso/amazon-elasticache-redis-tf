@@ -50,19 +50,23 @@ resource "aws_instance" "app-server-read" {
   iam_instance_profile        = aws_iam_instance_profile.ec2_profile.name
   associate_public_ip_address = true
   subnet_id                   = aws_subnet.public[0].id
-  ebs_optimized = true
-  monitoring = true
+  ebs_optimized               = true
+  monitoring                  = true
   root_block_device {
     encrypted = true
+  }
+  metadata_options {
+    http_endpoint = "enabled"
+    http_tokens   = "required"
   }
   tags = {
     Name = "app-4-server-read"
   }
   user_data = templatefile("user_data/read_elasticache.tpl",
     {
-      Region         = var.region,
-      elasticache_ep = aws_ssm_parameter.elasticache_ep.name,
-      elasticache_ep_port = aws_ssm_parameter.elasticache_port.name,
+      Region                 = var.region,
+      elasticache_ep         = aws_ssm_parameter.elasticache_ep.name,
+      elasticache_ep_port    = aws_ssm_parameter.elasticache_port.name,
       elasticache_auth_token = aws_secretsmanager_secret.elasticache_auth.name
   })
 }
@@ -73,19 +77,23 @@ resource "aws_instance" "app-server-write" {
   iam_instance_profile        = aws_iam_instance_profile.ec2_profile.name
   associate_public_ip_address = true
   subnet_id                   = aws_subnet.public[0].id
-  ebs_optimized = true
-  monitoring = true
-    root_block_device {
+  ebs_optimized               = true
+  monitoring                  = true
+  root_block_device {
     encrypted = true
+  }
+  metadata_options {
+    http_endpoint = "enabled"
+    http_tokens   = "required"
   }
   tags = {
     Name = "app-4-server-write"
   }
   user_data = templatefile("user_data/write_elasticache.tpl",
     {
-      Region         = var.region,
-      elasticache_ep = aws_ssm_parameter.elasticache_ep.name,
-      elasticache_ep_port = aws_ssm_parameter.elasticache_port.name,
+      Region                 = var.region,
+      elasticache_ep         = aws_ssm_parameter.elasticache_ep.name,
+      elasticache_ep_port    = aws_ssm_parameter.elasticache_port.name,
       elasticache_auth_token = aws_secretsmanager_secret.elasticache_auth.name
   })
 }
