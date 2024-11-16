@@ -1,33 +1,27 @@
-resource "aws_internet_gateway" "this-igw" {
-  vpc_id = aws_vpc.this.id
-  tags = {
-    "Name" = "app-4-gateway"
-  }
-}
-resource "aws_route" "internet-route" {
-  destination_cidr_block = "0.0.0.0/0"
-  route_table_id         = aws_route_table.public.id
-  gateway_id             = aws_internet_gateway.this-igw.id
-}
 # create a security group
 resource "aws_security_group" "ec2_instance" {
-  name        = "app-4-ec2"
+  name        = "${var.name}-ec2"
   description = "Allow inbound to and outbound access from the Amazon EC2 instance."
-  ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = [var.vpc_cidr]
-    description = "Enable access from any resource inside the VPC."
-  }
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-    description = "Enable access to the internet."
-  }
   vpc_id = aws_vpc.this.id
+}
+resource "aws_security_group_rule" "ec2_instance_ingress" {
+  type               = "ingress"
+  security_group_id  = aws_security_group.ec2_instance.id
+  from_port          = 0
+  to_port            = 0
+  protocol           = "-1"
+  cidr_blocks        = [var.vpc_cidr]
+  description        = "Enable access from any resource inside the VPC."
+}
+
+resource "aws_security_group_rule" "ec2_instance_egress" {
+  type               = "egress"
+  security_group_id  = aws_security_group.ec2_instance.id
+  from_port          = 0
+  to_port            = 0
+  protocol           = "-1"
+  cidr_blocks        = ["0.0.0.0/0"]
+  description        = "Enable access to the internet."
 }
 
 #create an EC2 in a public subnet
@@ -61,7 +55,7 @@ resource "aws_instance" "app-server-read" {
     http_tokens   = "required"
   }
   tags = {
-    Name = "app-4-server-read"
+    Name = "${var.name}-server-read"
   }
   user_data = templatefile("user_data/read_elasticache.tpl",
     {
@@ -89,7 +83,7 @@ resource "aws_instance" "app-server-write" {
     http_tokens   = "required"
   }
   tags = {
-    Name = "app-4-server-write"
+    Name = "${var.name}-server-write"
   }
   user_data = templatefile("user_data/write_elasticache.tpl",
     {
