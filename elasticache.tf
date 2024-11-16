@@ -1,10 +1,10 @@
 resource "aws_elasticache_subnet_group" "elasticache_subnet" {
-  name       = "app-4-cache-subnet"
+  name       = "${var.name}-cache-subnet"
   subnet_ids = [for subnet in aws_subnet.private : subnet.id]
 }
 
 resource "aws_secretsmanager_secret" "elasticache_auth" {
-  name                    = "app-4-elasticache-auth"
+  name                    = "${var.name}-elasticache-auth"
   recovery_window_in_days = 0
   kms_key_id              = aws_kms_key.encryption_secret.id
   #checkov:skip=CKV2_AWS_57: Disabled Secrets Manager secrets automatic rotation
@@ -18,8 +18,8 @@ resource "aws_secretsmanager_secret_version" "auth" {
 resource "aws_elasticache_replication_group" "app4" {
   automatic_failover_enabled = true
   subnet_group_name          = aws_elasticache_subnet_group.elasticache_subnet.name
-  replication_group_id       = var.replication_group_id
-  description                = "ElastiCache cluster for app4"
+  replication_group_id       = var.name
+  description                = "ElastiCache cluster for ${var.name}"
   node_type                  = "cache.t2.small"
   parameter_group_name       = "default.redis7.cluster.on"
   port                       = 6379

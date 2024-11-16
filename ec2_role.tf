@@ -1,6 +1,6 @@
 # #https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role
 resource "aws_iam_role" "ec2_role" {
-  name = "app-4-ec2-role"
+  name = "${var.name}-ec2-role"
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
@@ -36,6 +36,6 @@ resource "aws_iam_role_policy_attachment" "secret_policy_attachement" {
 #Attach role to an instance profile
 #https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile
 resource "aws_iam_instance_profile" "ec2_profile" {
-  name = "app-4-ec2-profile"
+  name = "${var.name}-ec2-profile"
   role = aws_iam_role.ec2_role.name
 }
