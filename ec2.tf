@@ -2,26 +2,26 @@
 resource "aws_security_group" "ec2_instance" {
   name        = "${var.name}-ec2"
   description = "Allow inbound to and outbound access from the Amazon EC2 instance."
-  vpc_id = aws_vpc.this.id
+  vpc_id      = aws_vpc.this.id
 }
 resource "aws_security_group_rule" "ec2_instance_ingress" {
-  type               = "ingress"
-  security_group_id  = aws_security_group.ec2_instance.id
-  from_port          = 0
-  to_port            = 0
-  protocol           = "-1"
-  cidr_blocks        = [var.vpc_cidr]
-  description        = "Enable access from any resource inside the VPC."
+  type              = "ingress"
+  security_group_id = aws_security_group.ec2_instance.id
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = [var.vpc_cidr]
+  description       = "Enable access from any resource inside the VPC."
 }
 
 resource "aws_security_group_rule" "ec2_instance_egress" {
-  type               = "egress"
-  security_group_id  = aws_security_group.ec2_instance.id
-  from_port          = 0
-  to_port            = 0
-  protocol           = "-1"
-  cidr_blocks        = ["0.0.0.0/0"]
-  description        = "Enable access to the internet."
+  type              = "egress"
+  security_group_id = aws_security_group.ec2_instance.id
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  description       = "Enable access to the internet."
 }
 
 #create an EC2 in a public subnet
