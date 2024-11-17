@@ -67,7 +67,6 @@ resource "aws_kms_key" "encryption_rest" {
   enable_key_rotation     = true
   description             = "Key to encrypt cache at rest."
   deletion_window_in_days = 7
-  #checkov:skip=CKV2_AWS_64: KMS Key policy in a separate resource
   tags = {
     Name = "${var.name}-encryption-rest"
   }
