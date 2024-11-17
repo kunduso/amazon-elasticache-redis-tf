@@ -1,14 +1,16 @@
+#https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_subnet_group
 resource "aws_elasticache_subnet_group" "elasticache_subnet" {
   name       = "${var.name}-cache-subnet"
-  subnet_ids = [for subnet in aws_subnet.private : subnet.id]
+  subnet_ids = [for subnet in module.vpc.private_subnets : subnet.id]
 }
-
+#https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret
 resource "aws_secretsmanager_secret" "elasticache_auth" {
   name                    = "${var.name}-elasticache-auth"
   recovery_window_in_days = 0
   kms_key_id              = aws_kms_key.encryption_secret.id
   #checkov:skip=CKV2_AWS_57: Disabled Secrets Manager secrets automatic rotation
 }
+#https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version
 resource "aws_secretsmanager_secret_version" "auth" {
   secret_id     = aws_secretsmanager_secret.elasticache_auth.id
   secret_string = random_password.auth.result
@@ -43,8 +45,8 @@ resource "aws_elasticache_replication_group" "app4" {
     log_format       = "json"
     log_type         = "engine-log"
   }
-  lifecycle {
-    ignore_changes = [kms_key_id]
-  }
+  # lifecycle {
+  #   ignore_changes = [kms_key_id]
+  # }
   apply_immediately = true
 }
