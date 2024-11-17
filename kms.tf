@@ -1,13 +1,50 @@
-
+#https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key
 resource "aws_kms_key" "encryption_secret" {
   enable_key_rotation     = true
   description             = "Key to encrypt secret"
   deletion_window_in_days = 7
-
-  # Attach the KMS key policy
+  tags = {
+    Name = "${var.name}-encryption-secret"
+  }
+}
+#https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias
+resource "aws_kms_alias" "encryption_secret" {
+  name          = "alias/${var.name}-elasticache-in-transit"
+  target_key_id = aws_kms_key.encryption_secret.key_id
+}
+#https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key_policy
+resource "aws_kms_key_policy" "encryption_secret_policy" {
+  key_id = aws_kms_key.encryption_secret.id
   policy = jsonencode({
-    Version = "2012-10-17"
+    Id = "${var.name}-encryption-secret"
     Statement = [
+      {
+        Action = [
+          "kms:Create*",
+          "kms:Describe*",
+          "kms:Enable*",
+          "kms:List*",
+          "kms:Put*",
+          "kms:Update*",
+          "kms:Revoke*",
+          "kms:Disable*",
+          "kms:Get*",
+          "kms:Delete*",
+          "kms:ScheduleKeyDeletion",
+          "kms:CancelKeyDeletion"
+        ]
+        Effect = "Allow"
+        Principal = {
+          AWS = "${local.principal_root_arn}"
+        }
+        Resource = "*"
+        Sid      = "Enable IAM User Permissions"
+        Condition = {
+          StringEquals = {
+            "kms:CallerAccount" = "${data.aws_caller_identity.current.account_id}"
+          }
+        }
+      },
       {
         Sid    = "AllowSecretsManagerUse"
         Effect = "Allow"
@@ -21,47 +58,11 @@ resource "aws_kms_key" "encryption_secret" {
         Principal = {
           Service = "secretsmanager.amazonaws.com"
         }
-      },
-      {
-        Sid      = "AllowAdminAccessToKMSKey"
-        Effect   = "Allow"
-        Action   = "kms:*"
-        Resource = "*"
-        Principal = {
-          AWS = "*"
-        }
-      },
-      {
-        Sid    = "AllowIAMRolesToUseKey"
-        Effect = "Allow"
-        Action = [
-          "kms:Encrypt",
-          "kms:Decrypt",
-          "kms:ReEncrypt*",
-          "kms:GenerateDataKey*"
-        ]
-        Resource = "*"
-        Principal = {
-          AWS = "*"
-        }
-        Condition = {
-          StringEquals = {
-            "kms:CallerAccount" = "${data.aws_caller_identity.current.account_id}"
-          }
-        }
       }
     ]
   })
-
-  tags = {
-    Name = "${var.name}-encryption-secret"
-  }
 }
-
-resource "aws_kms_alias" "encryption_secret" {
-  name          = "alias/${var.name}-elasticache-in-transit"
-  target_key_id = aws_kms_key.encryption_secret.key_id
-}
+#https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key
 resource "aws_kms_key" "encryption_rest" {
   enable_key_rotation     = true
   description             = "Key to encrypt cache at rest."
@@ -71,23 +72,59 @@ resource "aws_kms_key" "encryption_rest" {
     Name = "${var.name}-encryption-rest"
   }
 }
+#https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias
 resource "aws_kms_alias" "encryption_rest" {
   name          = "alias/${var.name}-elasticache-at-rest"
   target_key_id = aws_kms_key.encryption_rest.key_id
 }
+#https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key_policy
 resource "aws_kms_key_policy" "encryption_rest_policy" {
   key_id = aws_kms_key.encryption_rest.id
   policy = jsonencode({
     Id = "${var.name}-encryption-rest"
     Statement = [
       {
-        Action = "kms:*"
+        Action = [
+          "kms:Create*",
+          "kms:Describe*",
+          "kms:Enable*",
+          "kms:List*",
+          "kms:Put*",
+          "kms:Update*",
+          "kms:Revoke*",
+          "kms:Disable*",
+          "kms:Get*",
+          "kms:Delete*",
+          "kms:ScheduleKeyDeletion",
+          "kms:CancelKeyDeletion"
+        ]
         Effect = "Allow"
         Principal = {
           AWS = "${local.principal_root_arn}"
         }
         Resource = "*"
         Sid      = "Enable IAM User Permissions"
+        Condition = {
+          StringEquals = {
+            "kms:CallerAccount" = "${data.aws_caller_identity.current.account_id}"
+          }
+        }
+      },
+      {
+        Sid    = "Allow ElastiCache to use the key"
+        Effect = "Allow"
+        Principal = {
+          Service = "elasticache.amazonaws.com"
+        }
+        Action = [
+          "kms:Decrypt",
+          "kms:Encrypt",
+          "kms:GenerateDataKey",
+          "kms:ReEncrypt*",
+          "kms:CreateGrant",
+          "kms:DescribeKey"
+        ]
+        Resource = "*"
       },
       {
         Effect : "Allow",
