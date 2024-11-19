@@ -45,8 +45,8 @@ resource "aws_elasticache_replication_group" "app4" {
     log_format       = "json"
     log_type         = "engine-log"
   }
-  # lifecycle {
-  #   ignore_changes = [kms_key_id]
-  # }
+  lifecycle {
+    ignore_changes = [kms_key_id]
+  }
   apply_immediately = true
 }
