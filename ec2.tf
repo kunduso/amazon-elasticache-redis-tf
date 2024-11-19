@@ -48,7 +48,7 @@ resource "aws_instance" "app-server-read" {
   iam_instance_profile        = aws_iam_instance_profile.ec2_profile.name
   associate_public_ip_address = true
   #checkov:skip=CKV_AWS_88: Required for Session Manager access
-  subnet_id     = module.vpc.private_subnets[0].id
+  subnet_id     = module.vpc.public_subnets[0].id
   ebs_optimized = true
   monitoring    = true
   root_block_device {
@@ -77,7 +77,7 @@ resource "aws_instance" "app-server-write" {
   iam_instance_profile        = aws_iam_instance_profile.ec2_profile.name
   associate_public_ip_address = true
   #checkov:skip=CKV_AWS_88: Required for Session Manager access
-  subnet_id     = module.vpc.private_subnets[0].id
+  subnet_id     = module.vpc.public_subnets[0].id
   ebs_optimized = true
   monitoring    = true
   root_block_device {
