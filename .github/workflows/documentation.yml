@@ -1,0 +1,25 @@
+#https://github.com/terraform-docs/gh-actions
+name: generate-terraform-docs
+on:
+  - pull_request
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    permissions:
+      #checkov:skip=CKV2_GHA_1: This is required to add Terraform module details to the ReadMe.md
+      # Ensure top-level permissions are not set to write-all
+      contents: write
+      id-token: write
+      pull-requests: write
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+
+    - name: Render terraform docs inside the README.md and push changes back to PR branch
+      uses: terraform-docs/gh-actions@v1.3.0
+      with:
+        working-dir: .
+        output-file: README.md
+        output-method: inject
+        git-push: "true"
