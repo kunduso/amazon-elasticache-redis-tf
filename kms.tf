@@ -12,6 +12,7 @@ resource "aws_kms_alias" "encryption_secret" {
   name          = "alias/${var.name}-encryption-secret"
   target_key_id = aws_kms_key.encryption_secret.key_id
 }
+#https://docs.aws.amazon.com/secretsmanager/latest/userguide/security-encryption.html#security-encryption-policies
 #https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key_policy
 resource "aws_kms_key_policy" "encryption_secret_policy" {
   key_id = aws_kms_key.encryption_secret.id
