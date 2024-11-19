@@ -18,6 +18,11 @@ variable "secret_key" {
   sensitive   = true
   default     = ""
 }
+variable "name" {
+  description = "The name of the application."
+  type        = string
+  default     = "app-4"
+}
 variable "vpc_cidr" {
   description = "CIDR for the VPC."
   default     = "10.20.32.0/25"
@@ -41,8 +46,8 @@ variable "instance_type" {
   description = "The instance type of the EC2 instances"
   default     = "t3.medium"
 }
-variable "replication_group_id" {
-  description = "The name of the ElastiCache replication group."
-  default     = "app-4-redis-cluster"
-  type        = string
-}
+# variable "replication_group_id" {
+#   description = "The name of the ElastiCache replication group."
+#   default     = "app-4-redis-cluster"
+#   type        = string
+# }

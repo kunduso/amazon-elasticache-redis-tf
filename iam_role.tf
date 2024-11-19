@@ -1,7 +1,7 @@
 #Create a policy to read from the specific parameter store
 #https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy
 resource "aws_iam_policy" "ssm_parameter_policy" {
-  name        = "app-4-ssm-parameter-read-policy"
+  name        = "${var.name}-ssm-parameter-read-policy"
   path        = "/"
   description = "Policy to read the ElastiCache endpoint and port number stored in the SSM Parameter Store."
   # Terraform's "jsonencode" function converts a
@@ -29,7 +29,7 @@ resource "aws_iam_policy" "ssm_parameter_policy" {
 }
 #https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy
 resource "aws_iam_policy" "secret_manager_policy" {
-  name        = "app-4-secret-read-policy"
+  name        = "${var.name}-secret-read-policy"
   path        = "/"
   description = "Policy to read the ElastiCache AUTH Token stored in AWS Secrets Manager secret."
   # Terraform's "jsonencode" function converts a
