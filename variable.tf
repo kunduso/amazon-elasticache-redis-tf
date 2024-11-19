@@ -18,6 +18,11 @@ variable "secret_key" {
   sensitive   = true
   default     = ""
 }
+variable "name" {
+  description = "The name of the application."
+  type        = string
+  default     = "app-4"
+}
 variable "vpc_cidr" {
   description = "CIDR for the VPC."
   default     = "10.20.32.0/25"
@@ -31,10 +36,4 @@ variable "subnet_cidr_public" {
   description = "CIDR blocks for the public subnets."
   default     = ["10.20.32.96/27"]
   type        = list(any)
-}
-
-variable "replication_group_id" {
-  description = "The name of the ElastiCache replication group."
-  default     = "app-4-redis-cluster"
-  type        = string
 }
